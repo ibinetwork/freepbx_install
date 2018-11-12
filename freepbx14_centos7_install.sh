@@ -61,8 +61,8 @@ autoreconf -i
 make
 make install
 cd /usr/src
-tar xvfz asterisk-14-current.tar.gz
-rm -f asterisk-14-current.tar.gz
+tar xvfz asterisk-13-current.tar.gz
+rm -f asterisk-13-current.tar.gz
 cd asterisk-*
 contrib/scripts/install_prereq install
 ./configure --libdir=/usr/lib64 --with-pjproject-bundled
