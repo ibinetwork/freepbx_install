@@ -2,7 +2,10 @@
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
+# Atualiza o Sistema Operacional
 yum -y update
+# Instala alguns utilitarios
+yum -y install nmap mtr mlocate deltarpm mc vim lynx net-tools tcpdump
 yum -y groupinstall core base "Development Tools"
 adduser asterisk -m -c "Asterisk User"
 firewall-cmd --zone=public --add-port=80/tcp --permanent
@@ -97,6 +100,3 @@ cd freepbx
 echo -e "\033[40;31m======================================================================================================================================== \033[1m"
 echo -e "\033[40;31mSeu FreePBX está instalado. Acesse usando seu navegador e IP do servidor para continuar suas configurações! \033[1m"
 echo -e "\033[40;31m======================================================================================================================================== \033[0m"
-
-
-
