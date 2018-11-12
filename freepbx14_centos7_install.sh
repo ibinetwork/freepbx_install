@@ -2,10 +2,14 @@
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
-# Atualiza o Sistema Operacional
+echo "Atualizando o Sistema Operacional"
+sleep 5
 yum -y update
-# Instala alguns utilitarios
-yum -y install nmap mtr mlocate deltarpm mc vim lynx net-tools tcpdump
+echo "Instalando Ferramentas Úteis...
+sleep 5
+yum -y install wget mtr vim mlocate nmap tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools
+echo "Iniciando a Instalação do FreePBX"
+sleep 5
 yum -y groupinstall core base "Development Tools"
 adduser asterisk -m -c "Asterisk User"
 firewall-cmd --zone=public --add-port=80/tcp --permanent
