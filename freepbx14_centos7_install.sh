@@ -97,6 +97,15 @@ sed -i 's/\(^upload_max_filesize = \).*/\120M/' /etc/php.ini
 sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/httpd/conf/httpd.conf
 sed -i 's/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
 systemctl restart httpd.service
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > /etc/firewalld/services/asterisk.xml
+echo "<service>" >> /etc/firewalld/services/asterisk.xml
+echo "  <short>asterisk</short>" >> /etc/firewalld/services/asterisk.xml
+echo "  <description>Asterisk is a software implementation of a telephone private branch exchange (PBX).</description>" >> /etc/firewalld/services/asterisk.xml
+echo "  <port protocol=\"udp\" port=\"10000-20000\"/>" >> /etc/firewalld/services/asterisk.xml
+echo "  <port protocol=\"udp\" port=\"4569\"/>" >> /etc/firewalld/services/asterisk.xml
+echo "  <port protocol=\"udp\" port=\"2727\"/>" >> /etc/firewalld/services/asterisk.xml
+echo "  <port protocol=\"udp\" port=\"5060-5061\"/>" >> /etc/firewalld/services/asterisk.xml
+echo "</service>" >> /etc/firewalld/services/asterisk.xml
 cd /usr/src
 wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz
 tar xfz freepbx-14.0-latest.tgz
@@ -117,15 +126,6 @@ echo "" >> /etc/systemd/system/freepbx.service
 echo "[Install]" >> /etc/systemd/system/freepbx.service
 echo "WantedBy=multi-user.target" >> /etc/systemd/system/freepbx.service
 systemctl enable freepbx.service
-echo "<?xml version="1.0" encoding="utf-8"?>" > /etc/firewalld/services/asterisk.xml
-echo "<service>" >> /etc/firewalld/services/asterisk.xml
-echo "  <short>asterisk</short>" >> /etc/firewalld/services/asterisk.xml
-echo "  <description>Asterisk is a software implementation of a telephone private branch exchange (PBX).</description>" >> /etc/firewalld/services/asterisk.xml
-echo "  <port protocol="udp" port="10000-20000"/>" >> /etc/firewalld/services/asterisk.xml
-echo "  <port protocol="udp" port="4569"/>" >> /etc/firewalld/services/asterisk.xml
-echo "  <port protocol="udp" port="2727"/>" >> /etc/firewalld/services/asterisk.xml
-echo "  <port protocol="udp" port="5060-5061"/>" >> /etc/firewalld/services/asterisk.xml
-echo "</service>" >> /etc/firewalld/services/asterisk.xml
 firewall-cmd --add-service=asterisk --permanent
 firewall-cmd --reload
 updatedb
