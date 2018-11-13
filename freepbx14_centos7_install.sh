@@ -74,7 +74,8 @@ cd asterisk-*
 contrib/scripts/install_prereq install
 ./configure --libdir=/usr/lib64 --with-pjproject-bundled
 contrib/scripts/get_mp3_source.sh
-menuselect/menuselect --enable format_mp3 app_macro menuselect.makeopts
+menuselect/menuselect --enable format_mp3 menuselect.makeopts
+menuselect/menuselect --enable app_macro menuselect.makeopts
 make
 make install
 make config
