@@ -5,7 +5,7 @@ setenforce 0
 echo "Atualizando o Sistema Operacional"
 sleep 5
 yum -y update
-echo "Instalando Ferramentas Úteis...
+echo "Instalando Ferramentas Úteis..."
 sleep 5
 yum -y install wget mtr vim mlocate nmap tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools minicom
 echo "Iniciando a Instalação do FreePBX"
