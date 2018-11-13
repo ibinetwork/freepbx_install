@@ -46,7 +46,7 @@ systemctl start httpd.service
 cd /usr/src
 wget http://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
-wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
+wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
 wget -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.10.tar.gz
 cd /usr/src
 tar xvfz dahdi-linux-complete-current.tar.gz
@@ -68,14 +68,13 @@ autoreconf -i
 make
 make install
 cd /usr/src
-tar xvfz asterisk-16-current.tar.gz
-rm -f asterisk-16-current.tar.gz
+tar xvfz asterisk-13-current.tar.gz
+rm -f asterisk-13-current.tar.gz
 cd asterisk-*
 contrib/scripts/install_prereq install
 ./configure --libdir=/usr/lib64 --with-pjproject-bundled
 contrib/scripts/get_mp3_source.sh
 menuselect/menuselect --enable format_mp3 menuselect.makeopts
-menuselect/menuselect --enable app_macro menuselect.makeopts
 make
 make install
 make config
