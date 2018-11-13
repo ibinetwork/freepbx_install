@@ -2,13 +2,16 @@
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
-echo "Atualizando o Sistema Operacional"
+clear
+echo "ATUALIZANDO O SISTEMA OPERACIONAL"
 sleep 5
 yum -y update
-echo "Instalando Ferramentas Úteis..."
+clear
+echo "INSTALANDO FERRAMENTAS UTEIS..."
 sleep 5
-yum -y install wget mtr vim mlocate nmap tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools minicom
-echo "Iniciando a Instalação do FreePBX"
+yum -y install wget mtr vim mlocate nmap tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
+clear
+echo "INICIANDO A INSTALAÇÃO DO FREEPBX"
 sleep 5
 yum -y groupinstall core base "Development Tools"
 adduser asterisk -m -c "Asterisk User"
@@ -43,7 +46,7 @@ systemctl start httpd.service
 cd /usr/src
 wget http://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
-wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
+wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz
 wget -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.10.tar.gz
 cd /usr/src
 tar xvfz dahdi-linux-complete-current.tar.gz
@@ -65,13 +68,13 @@ autoreconf -i
 make
 make install
 cd /usr/src
-tar xvfz asterisk-13-current.tar.gz
-rm -f asterisk-13-current.tar.gz
+tar xvfz asterisk-16-current.tar.gz
+rm -f asterisk-16-current.tar.gz
 cd asterisk-*
 contrib/scripts/install_prereq install
 ./configure --libdir=/usr/lib64 --with-pjproject-bundled
 contrib/scripts/get_mp3_source.sh
-menuselect/menuselect --enable format_mp3 menuselect.makeopts
+menuselect/menuselect --enable format_mp3 app_macro menuselect.makeopts
 make
 make install
 make config
@@ -101,6 +104,25 @@ rm -f freepbx-14.0-latest.tgz
 cd freepbx
 ./start_asterisk start
 ./install -n
+echo "[Unit]" > /etc/systemd/system/freepbx.service
+echo "Description=FreePBX VoIP Server" >> /etc/systemd/system/freepbx.service
+echo "After=mariadb.service" >> /etc/systemd/system/freepbx.service
+echo "" >> /etc/systemd/system/freepbx.service
+echo "[Service]" >> /etc/systemd/system/freepbx.service
+echo "Type=oneshot" >> /etc/systemd/system/freepbx.service
+echo "RemainAfterExit=yes" >> /etc/systemd/system/freepbx.service
+echo "ExecStart=/usr/sbin/fwconsole start -q" >> /etc/systemd/system/freepbx.service
+echo "ExecStop=/usr/sbin/fwconsole stop -q" >> /etc/systemd/system/freepbx.service
+echo "" >> /etc/systemd/system/freepbx.service
+echo "[Install]" >> /etc/systemd/system/freepbx.service
+echo "WantedBy=multi-user.target" >> /etc/systemd/system/freepbx.service
+systemctl enable freepbx.service
+updatedb
+clear
 echo -e "\033[40;31m======================================================================================================================================== \033[1m"
 echo -e "\033[40;31mSeu FreePBX está instalado. Acesse usando seu navegador e IP do servidor para continuar suas configurações! \033[1m"
+echo -e "\033[40;31m======================================================================================================================================== \033[1m"
+echo -e "\033[40;31mSEU SISTEMA IRA REINICIAR EM 15s (PRESSIONE CTRL+C PARA RENICIAR MANUALMENTE) \033[1m"
 echo -e "\033[40;31m======================================================================================================================================== \033[0m"
+sleep 15
+reboot
