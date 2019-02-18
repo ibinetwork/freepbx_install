@@ -1,9 +1,27 @@
 #!/bin/bash
+clear
 # Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7
 # Autor: Rafael Tavares 
 # Contribuinte: Janduy Euclides
 # Versão 1.0 - XX/XX/XXXX :Instalação dos pré requisitos do sistema linux, download dos pacotes para instalação do FreePBX e asterisk.
 # Versão 1.1 - 18/02/2019 :Alterado a versão do pacote dahdi para versão 2.10, instalação do telnet e do SNGREP.
+echo "                                                            ,--.                       "
+echo ",------.                     ,------. ,-----. ,--.   ,--..-,|  |,-. ,-----.  ,------.  "
+echo "|  .---',--.--. ,---.  ,---. |  .--. '|  |) /_ \  `.'  / _\ '  ' /_ |  |) /_ |  .--. ' "
+echo "|  `--, |  .--'| .-. :| .-. :|  '--' ||  .-.  \ .'    \ (__      __)|  .-.  \|  '--'.' "
+echo "|  |`   |  |   \   --.\   --.|  | --' |  '--' //  .'.  \  / .  . \  |  '--' /|  |\  \  "
+echo "`--'    `--'    `----' `----'`--'     `------''--'   '--'`-'|  |`-' `------' `--' '--' "
+echo "                                                            `--'                       "
+echo "======================================================================================="
+echo "# Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7"
+echo "# Autor: Rafael Tavares"
+echo "# Contribuinte: Janduy Euclides"
+echo "# Versão 1.0 - 10/10/2018 : Instalação dos pré requisitos do sistema linux,"
+echo "  download dos pacotes para instalação do FreePBX e asterisk."
+echo "# Versão 1.1 - 18/02/2019 : Alterado a versão do pacote dahdi para versão 2.10,"
+echo "  instalação do telnet e do SNGREP."
+echo "======================================================================================="
+sleep 10
 clear
 echo "DESABILITANDO SELINUX"
 sleep 5
