@@ -1,4 +1,12 @@
 #!/bin/bash
+# Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7
+# Autor: Rafael Tavares 
+# Contribuinte: Janduy Euclides
+# Versão 1.0 - XX/XX/XXXX :Instalação dos pré requisitos do sistema linux, download dos pacotes para instalação do FreePBX e asterisk.
+# Versão 1.1 - 18/02/2019 :Alterado a versão do pacote dahdi para versão 2.10, instalação do telnet e do SNGREP.
+clear
+echo "DESABILITANDO SELINUX"
+sleep 5
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
@@ -9,10 +17,25 @@ yum -y update
 clear
 echo "INSTALANDO FERRAMENTAS UTEIS..."
 sleep 5
-yum -y install wget mtr vim mlocate nmap tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
+yum -y install wget mtr vim mlocate nmap telnet tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
+clear
+yum clean all
+yum makecache
+yum update
+clear
+# Instalação do SNGREP
+echo "INSTALANDO SNGREP"
+sleep 5
+echo '[irontec]
+name=Irontec RPMs repository
+baseurl=http://packages.irontec.com/centos/$releasever/$basearch/
+' > /etc/yum.repos.d/irontec.repo
+rpm --import http://packages.irontec.com/public.key
+yum install sngrep -y
 clear
 echo "INICIANDO A INSTALAÇÃO DO FREEPBX"
 sleep 5
+yum -y install kernel-devel.`uname -m` epel-release
 yum -y groupinstall core base "Development Tools"
 adduser asterisk -m -c "Asterisk User"
 firewall-cmd --zone=public --add-port=80/tcp --permanent
@@ -44,14 +67,14 @@ rm -fr mysql_secure_installation.exp
 systemctl enable httpd.service
 systemctl start httpd.service
 cd /usr/src
-wget http://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-current.tar.gz
+wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-2.10.0+2.10.0.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
 wget -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.10.tar.gz
 cd /usr/src
-tar xvfz dahdi-linux-complete-current.tar.gz
+tar xvfz dahdi-linux-complete-2.10.0+2.10.0.tar.gz
 tar xvfz libpri-current.tar.gz
-rm -f dahdi-linux-complete-current.tar.gz libpri-current.tar.gz
+rm -f dahdi-linux-complete-2.10.0+2.10.0.tar.gz libpri-current.tar.gz
 cd dahdi-linux-complete-*
 make all
 make install
@@ -114,7 +137,7 @@ cd freepbx
 ./start_asterisk start
 ./install -n
 echo "[Unit]" > /etc/systemd/system/freepbx.service
-echo "Description=FreePBX VoIP Server" >> /etc/systemd/system/freepbx.service
+echo "Description=Servidor de VoIP - FreePBX" >> /etc/systemd/system/freepbx.service
 echo "After=mariadb.service" >> /etc/systemd/system/freepbx.service
 echo "" >> /etc/systemd/system/freepbx.service
 echo "[Service]" >> /etc/systemd/system/freepbx.service
