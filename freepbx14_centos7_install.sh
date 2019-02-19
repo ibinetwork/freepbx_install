@@ -5,6 +5,7 @@ clear
 # Contribuinte: Janduy Euclides
 # Versão 1.0 - XX/XX/XXXX :Instalação dos pré requisitos do sistema linux, download dos pacotes para instalação do FreePBX e asterisk.
 # Versão 1.1 - 18/02/2019 :Alterado a versão do pacote dahdi para versão 2.10, instalação do telnet e do SNGREP.
+# Versão 1.2 - 18/02/2019 : Adicionado audio pt-br, codec g729 e tratamento hangup cause.
 echo "                                                            ,--.                       "
 echo ",------.                     ,------. ,-----. ,--.   ,--..-,|  |,-. ,-----.  ,------.  "
 echo "|  .---',--.--. ,---.  ,---. |  .--. '|  |) /_ \  `.'  / _\ '  ' /_ |  |) /_ |  .--. ' "
@@ -17,23 +18,33 @@ echo "# Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS
 echo "# Autor: Rafael Tavares"
 echo "# Contribuinte: Janduy Euclides"
 echo "# Versão 1.0 - 10/10/2018 : Instalação dos pré requisitos do sistema linux,"
-echo "  download dos pacotes para instalação do FreePBX e asterisk."
-echo "# Versão 1.1 - 18/02/2019 : Alterado a versão do pacote dahdi para versão 2.10,"
+echo "  download dos pacotes para instalação do FreePBX e Asterisk."
+echo "# Versão 1.1 - 18/02/2019 : Alterado a versão do pacote dahdi para versão 2.10"
 echo "  instalação do telnet e do SNGREP."
+echo "# Versão 1.2 - 18/02/2019 : Adicionado audio pt-br,"
+echo "  codec g729 e tratamento hangup cause."
 echo "======================================================================================="
 sleep 10
+yum install epel-release -y
+yum install cowsay -y
 clear
-echo "DESABILITANDO SELINUX"
+echo ""
+cowsay "DESABILITANDO SELINUX"
+echo ""
 sleep 5
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
 clear
-echo "ATUALIZANDO O SISTEMA OPERACIONAL"
+echo ""
+cowsay "ATUALIZANDO O SISTEMA OPERACIONAL"
+echoo ""
 sleep 5
 yum -y update
 clear
-echo "INSTALANDO FERRAMENTAS UTEIS..."
+echo ""
+cowsay "INSTALANDO FERRAMENTAS UTEIS..."
+echo ""
 sleep 5
 yum -y install wget mtr vim mlocate nmap telnet tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
 clear
@@ -42,7 +53,9 @@ yum makecache
 yum update
 clear
 # Instalação do SNGREP
-echo "INSTALANDO SNGREP"
+echo ""
+cowsay "INSTALANDO SNGREP"
+echo ""
 sleep 5
 echo '[irontec]
 name=Irontec RPMs repository
@@ -51,7 +64,9 @@ baseurl=http://packages.irontec.com/centos/$releasever/$basearch/
 rpm --import http://packages.irontec.com/public.key
 yum install sngrep -y
 clear
-echo "INICIANDO A INSTALAÇÃO DO FREEPBX"
+echo ""
+cowsay "INICIANDO A INSTALAÇÃO DO FREEPBX"
+echo ""
 sleep 5
 yum -y install kernel-devel.`uname -m` epel-release
 yum -y groupinstall core base "Development Tools"
@@ -108,6 +123,11 @@ autoreconf -i
 ./configure --libdir=/usr/lib64
 make
 make install
+clear
+echo ""
+cowsay "INSTALANDO ASTERISK 13"
+echo ""
+sleep 5
 cd /usr/src
 tar xvfz asterisk-13-current.tar.gz
 rm -f asterisk-13-current.tar.gz
@@ -147,6 +167,11 @@ echo "  <port protocol=\"udp\" port=\"4569\"/>" >> /etc/firewalld/services/aster
 echo "  <port protocol=\"udp\" port=\"2727\"/>" >> /etc/firewalld/services/asterisk.xml
 echo "  <port protocol=\"udp\" port=\"5060-5061\"/>" >> /etc/firewalld/services/asterisk.xml
 echo "</service>" >> /etc/firewalld/services/asterisk.xml
+clear
+echo ""
+cowsay "INSTALANDO O FREEPBX"
+echo ""
+sleep 5
 cd /usr/src
 wget http://mirror.freepbx.org/modules/packages/freepbx/freepbx-14.0-latest.tgz
 tar xfz freepbx-14.0-latest.tgz
@@ -154,6 +179,11 @@ rm -f freepbx-14.0-latest.tgz
 cd freepbx
 ./start_asterisk start
 ./install -n
+clear
+echo ""
+cowsay "ADIONANDO FREEPBX A INICIALIZAÇÃO"
+echo ""
+sleep 5
 echo "[Unit]" > /etc/systemd/system/freepbx.service
 echo "Description=Servidor de VoIP - FreePBX" >> /etc/systemd/system/freepbx.service
 echo "After=mariadb.service" >> /etc/systemd/system/freepbx.service
@@ -169,6 +199,41 @@ echo "WantedBy=multi-user.target" >> /etc/systemd/system/freepbx.service
 systemctl enable freepbx.service
 firewall-cmd --add-service=asterisk --permanent
 firewall-cmd --reload
+clear
+svn co https://github.com/ibinetwork/IssabelBR/trunk/ /usr/src/IssabelBR
+clear
+echo ""
+cowsay "INSTALANDO AUDIO EM PORTUGUÊS BRASIL"
+echo ""
+sleep 5
+rsync --progress -r -u /usr/src/IssabelBR/audio/ /var/lib/asterisk/sounds/
+sed -i '/language=pt_BR/d' /etc/asterisk/sip_general_custom.conf
+echo "language=pt_BR" >> /etc/asterisk/sip_general_custom.conf
+sed -i '/language=pt_BR/d' /etc/asterisk/iax_general_custom.conf
+echo "language=pt_BR" >> /etc/asterisk/iax_general_custom.conf
+sed -i '/defaultlanguage=pt_BR/d' /etc/asterisk/asterisk.conf
+echo "defaultlanguage=pt_BR" >> /etc/asterisk/asterisk.conf
+clear
+echo ""
+cowsay "INSTALANDO CODEC G729"
+echo ""
+sleep 5
+ cp /usr/src/IssabelBR/codecs/codec_g729-ast130-gcc4-glibc2.2-x86_64-pentium4.so /usr/lib64/asterisk/modules/codec_g729.so
+ chmod 755 /usr/lib64/asterisk/modules/codec_g729.so
+ asterisk -rx "module load codec_g729"
+ clear
+echo ""
+cowsay "INSTALANDO TRATAMENTO HANGCAUSE"
+echo ""
+sleepp 5
+sed -i '/extensions_tratamento_hangupcause.conf/d' /etc/asterisk/extensions_override_freepbx.conf
+echo "#include /etc/asterisk/extensions_tratamento_hangupcause.conf" >> /etc/asterisk/extensions_override_freepbx.conf
+rsync --progress -r /usr/src/IssabelBR/etc/asterisk/ /etc/asterisk/
+chown asterisk.asterisk /etc/asterisk/extensions_tratamento_hangupcause.conf
+echo ""
+rm -Rf /usr/src/IssabelBR
+fwconsole restart
+echo ""
 updatedb
 clear
 echo -e "\033[40;31m======================================================================================================================================== \033[1m"
