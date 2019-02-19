@@ -32,7 +32,7 @@ setenforce 0
 clear
 echo ""
 cowsay "ATUALIZANDO O SISTEMA OPERACIONAL"
-echoo ""
+echo ""
 sleep 5
 yum -y update
 clear
