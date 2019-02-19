@@ -6,12 +6,6 @@ clear
 # Versão 1.0 - XX/XX/XXXX :Instalação dos pré requisitos do sistema linux, download dos pacotes para instalação do FreePBX e asterisk.
 # Versão 1.1 - 18/02/2019 :Alterado a versão do pacote dahdi para versão 2.10, instalação do telnet e do SNGREP.
 # Versão 1.2 - 18/02/2019 : Adicionado audio pt-br, codec g729 e tratamento hangup cause.
-echo "  ______             _____  ______   __  _    ____  _____  "
-echo " |  ____|           |  __ \|  _ \ \ / /\| |/\|  _ \|  __ \ "
-echo " | |__ _ __ ___  ___| |__) | |_) \ V /\ \` ' /| |_) | |__) |"
-echo " |  __| '__/ _ \/ _ \  ___/|  _ < > <|_     _|  _ <|  _  / "
-echo " | |  | | |  __/  __/ |    | |_) / . \/ , . \| |_) | | \ \ "
-echo " |_|  |_|  \___|\___|_|    |____/_/ \_\/|_|\/|____/|_|  \_\"
 echo "                                                           "
 echo "======================================================================================="
 echo "# Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7"
