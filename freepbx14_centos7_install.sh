@@ -3,20 +3,26 @@ clear
 # Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7
 # Autor: Rafael Tavares 
 # Contribuinte: Janduy Euclides
-# Versão 1.0 - XX/XX/XXXX :Instalação dos pré requisitos do sistema linux, download dos pacotes para instalação do FreePBX e asterisk.
-# Versão 1.1 - 18/02/2019 :Alterado a versão do pacote dahdi para versão 2.10, instalação do telnet e do SNGREP.
-# Versão 1.2 - 18/02/2019 : Adicionado audio pt-br, codec g729 e tratamento hangup cause.
 echo "                                                           "
 echo "======================================================================================="
 echo "# Script de Instalação customizada do FreePBX 14 e Asterisk 13 no CentOS7"
 echo "# Autor: Rafael Tavares"
 echo "# Contribuinte: Janduy Euclides"
-echo "# Versão 1.0 - 10/10/2018 : Instalação dos pré requisitos do sistema linux,"
+echo "# Versão 1.0 - 12/11/2018 : Instalação dos pré requisitos do sistema linux,"
 echo "  download dos pacotes para instalação do FreePBX e Asterisk."
 echo "# Versão 1.1 - 18/02/2019 : Alterado a versão do pacote dahdi para versão 2.10"
 echo "  instalação do telnet e do SNGREP."
 echo "# Versão 1.2 - 18/02/2019 : Adicionado audio pt-br,"
 echo "  codec g729 e tratamento hangup cause."
+echo "# Versão 1.3 - 25/02/2019 : Download e Instalação dos principais modulos:"
+echo "  > timeconditions;													   "
+echo "  > bulkhandler;														   "
+echo "  > customcontexts;													   "
+echo "  > ringgroups;														   "
+echo "  > queues;															   "
+echo "  > ivr; 																   "
+echo "  > asteriskinfo;														   "
+echo "  > iaxsettings.														   "
 echo "======================================================================================="
 sleep 10
 yum install epel-release -y
@@ -93,6 +99,10 @@ chmod +x mysql_secure_installation.exp
 rm -fr mysql_secure_installation.exp
 systemctl enable httpd.service
 systemctl start httpd.service
+echo ""
+cowsay "INSTALANDO DAHDI"
+echo ""
+sleep 5
 cd /usr/src
 wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-2.10.0+2.10.0.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
@@ -217,7 +227,7 @@ sleep 5
  asterisk -rx "module load codec_g729"
  clear
 echo ""
-cowsay "INSTALANDO TRATAMENTO HANGCAUSE"
+cowsay "INSTALANDO TRATAMENTO HANGUPCAUSE"
 echo ""
 sleepp 5
 sed -i '/extensions_tratamento_hangupcause.conf/d' /etc/asterisk/extensions_override_freepbx.conf
@@ -227,6 +237,22 @@ chown asterisk.asterisk /etc/asterisk/extensions_tratamento_hangupcause.conf
 echo ""
 rm -Rf /usr/src/IssabelBR
 fwconsole restart
+clear
+echo ""
+cowsay "DOWNLOAD E INSTALAÇÃO DOS PRINCIPAIS MODULOS"
+echo ""
+sleep 5
+fwconsole ma downloadinstall cel
+fwconsole ma downloadinstall calendar
+fwconsole ma downloadinstall timeconditions
+fwconsole ma downloadinstall bulkhandler
+fwconsole ma downloadinstall customcontexts
+fwconsole ma downloadinstall ringgroups
+fwconsole ma downloadinstall queues
+fwconsole ma downloadinstall ivr
+fwconsole ma downloadinstall asteriskinfo
+fwconsole ma downloadinstall iaxsettings
+fwconsole r a
 echo ""
 updatedb
 clear
