@@ -24,6 +24,7 @@ echo "  > ivr; 																   "
 echo "  > asteriskinfo;														   "
 echo "  > iaxsettings.														   "
 echo "======================================================================================="
+echo "# Versão 1.3.1 - 11/07/2019 : Download e Instalação de modulos adicionais:"
 sleep 10
 yum install epel-release -y
 yum install cowsay -y
@@ -46,11 +47,11 @@ echo ""
 cowsay "INSTALANDO FERRAMENTAS UTEIS..."
 echo ""
 sleep 5
-yum -y install wget mtr vim mlocate nmap telnet tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
+yum install -y wget mtr vim mlocate nmap telnet tcpdump mc nano lynx rsync screen htop subversion deltarpm net-tools ntsysv minicom
 clear
 yum clean all
 yum makecache
-yum update
+yum update -y
 clear
 # Instalação do SNGREP
 echo ""
@@ -68,12 +69,12 @@ echo ""
 cowsay "INICIANDO A INSTALAÇÃO DO FREEPBX"
 echo ""
 sleep 5
-yum -y install kernel-devel.`uname -m` epel-release
+yum install -y kernel-devel.`uname -m` epel-release
 yum -y groupinstall core base "Development Tools"
 adduser asterisk -m -c "Asterisk User"
 firewall-cmd --zone=public --add-port=80/tcp --permanent
 firewall-cmd --reload
-yum -y install lynx tftp-server unixODBC mysql-connector-odbc mariadb-server mariadb httpd ncurses-devel sendmail sendmail-cf sox newt-devel libxml2-devel libtiff-devel audiofile-devel gtk2-devel subversion kernel-devel git crontabs cronie cronie-anacron wget vim uuid-devel sqlite-devel net-tools gnutls-devel python-devel texinfo libuuid-devel expect
+yum install -y lynx tftp-server unixODBC mysql-connector-odbc mariadb-server mariadb httpd ncurses-devel sendmail sendmail-cf sox newt-devel libxml2-devel libtiff-devel audiofile-devel gtk2-devel subversion kernel-devel git crontabs cronie cronie-anacron wget vim uuid-devel sqlite-devel net-tools gnutls-devel python-devel texinfo libuuid-devel expect
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum remove -y php*
@@ -99,6 +100,7 @@ chmod +x mysql_secure_installation.exp
 rm -fr mysql_secure_installation.exp
 systemctl enable httpd.service
 systemctl start httpd.service
+clear
 echo ""
 cowsay "INSTALANDO DAHDI"
 echo ""
@@ -229,7 +231,7 @@ sleep 5
 echo ""
 cowsay "INSTALANDO TRATAMENTO HANGUPCAUSE"
 echo ""
-sleepp 5
+sleep 5
 sed -i '/extensions_tratamento_hangupcause.conf/d' /etc/asterisk/extensions_override_freepbx.conf
 echo "#include /etc/asterisk/extensions_tratamento_hangupcause.conf" >> /etc/asterisk/extensions_override_freepbx.conf
 rsync --progress -r /usr/src/IssabelBR/etc/asterisk/ /etc/asterisk/
@@ -252,7 +254,21 @@ fwconsole ma downloadinstall queues
 fwconsole ma downloadinstall ivr
 fwconsole ma downloadinstall asteriskinfo
 fwconsole ma downloadinstall iaxsettings
+fwconsole ma downloadinstall backup
+fwconsole ma downloadinstall callforward
+fwconsole ma downloadinstall announcement
+fwconsole ma downloadinstall callrecording
+fwconsole ma downloadinstall daynight
+fwconsole ma downloadinstall endpointman
+fwconsole ma downloadinstall extensionsettings
+fwconsole ma downloadinstall featurecodeadmin
+fwconsole ma downloadinstall recordings
+fwconsole ma downloadinstall sipsettings
+fwconsole ma downloadinstall soundlang
+fwconsole ma downloadinstall voicemail
 fwconsole r a
+mkdir /tftpboot
+chmod -Rf /tftpboot
 echo ""
 updatedb
 clear
