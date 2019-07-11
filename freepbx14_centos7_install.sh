@@ -268,7 +268,7 @@ fwconsole ma downloadinstall soundlang
 fwconsole ma downloadinstall voicemail
 fwconsole r a
 mkdir /tftpboot
-chmod -Rf /tftpboot
+chmod -Rf 777 /tftpboot
 echo ""
 updatedb
 clear
