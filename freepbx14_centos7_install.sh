@@ -266,6 +266,7 @@ fwconsole ma downloadinstall recordings
 fwconsole ma downloadinstall sipsettings
 fwconsole ma downloadinstall soundlang
 fwconsole ma downloadinstall voicemail
+fwconsole ma downloadinstall donotdisturb
 fwconsole r a
 mkdir /tftpboot
 chmod -Rf 777 /tftpboot
