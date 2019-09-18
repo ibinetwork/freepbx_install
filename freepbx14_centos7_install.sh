@@ -75,7 +75,6 @@ adduser asterisk -m -c "Asterisk User"
 firewall-cmd --zone=public --add-port=80/tcp --permanent
 firewall-cmd --reload
 yum install -y lynx tftp-server unixODBC mysql-connector-odbc mariadb-server mariadb httpd ncurses-devel sendmail sendmail-cf sox newt-devel libxml2-devel libtiff-devel audiofile-devel gtk2-devel subversion kernel-devel git crontabs cronie cronie-anacron wget vim uuid-devel sqlite-devel net-tools gnutls-devel python-devel texinfo libuuid-devel expect
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum remove -y php*
 yum install -y php56w php56w-pdo php56w-mysql php56w-mbstring php56w-pear php56w-process php56w-xml php56w-opcache php56w-ldap php56w-intl php56w-soap
@@ -238,35 +237,15 @@ rsync --progress -r /usr/src/IssabelBR/etc/asterisk/ /etc/asterisk/
 chown asterisk.asterisk /etc/asterisk/extensions_tratamento_hangupcause.conf
 echo ""
 rm -Rf /usr/src/IssabelBR
-fwconsole restart
+fwconsole stop
+sleep 3
+fwconsole start
 clear
 echo ""
 cowsay "DOWNLOAD E INSTALAÇÃO DOS PRINCIPAIS MODULOS"
 echo ""
 sleep 5
-fwconsole ma downloadinstall cel
-fwconsole ma downloadinstall calendar
-fwconsole ma downloadinstall timeconditions
-fwconsole ma downloadinstall bulkhandler
-fwconsole ma downloadinstall customcontexts
-fwconsole ma downloadinstall ringgroups
-fwconsole ma downloadinstall queues
-fwconsole ma downloadinstall ivr
-fwconsole ma downloadinstall asteriskinfo
-fwconsole ma downloadinstall iaxsettings
-fwconsole ma downloadinstall backup
-fwconsole ma downloadinstall callforward
-fwconsole ma downloadinstall announcement
-fwconsole ma downloadinstall callrecording
-fwconsole ma downloadinstall daynight
-fwconsole ma downloadinstall endpointman
-fwconsole ma downloadinstall extensionsettings
-fwconsole ma downloadinstall featurecodeadmin
-fwconsole ma downloadinstall recordings
-fwconsole ma downloadinstall sipsettings
-fwconsole ma downloadinstall soundlang
-fwconsole ma downloadinstall voicemail
-fwconsole ma downloadinstall donotdisturb
+fwconsole ma downloadinstall cel calendar timeconditions bulkhandler customcontexts ringgroups queues ivr asteriskinfo iaxsettings backup callforward announcement callrecording daynight endpointman extensionsettings featurecodeadmin recordings sipsettings soundlang voicemail donotdisturb
 fwconsole r a
 mkdir /tftpboot
 chmod -Rf 777 /tftpboot
