@@ -237,9 +237,6 @@ rsync --progress -r /usr/src/IssabelBR/etc/asterisk/ /etc/asterisk/
 chown asterisk.asterisk /etc/asterisk/extensions_tratamento_hangupcause.conf
 echo ""
 rm -Rf /usr/src/IssabelBR
-fwconsole stop
-sleep 3
-fwconsole start
 clear
 echo ""
 cowsay "DOWNLOAD E INSTALAÇÃO DOS PRINCIPAIS MODULOS"
