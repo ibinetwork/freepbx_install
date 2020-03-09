@@ -38,6 +38,11 @@ sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 setenforce 0
 clear
 echo ""
+cowsay "DESABILITANDO IPV6"
+echo ""
+echo "net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+echo ""
 cowsay "ATUALIZANDO O SISTEMA OPERACIONAL"
 echo ""
 sleep 5
