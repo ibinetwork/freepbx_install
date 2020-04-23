@@ -1,10 +1,10 @@
 # freepbx_install
-Script FreePBX
+## Script FreePBX
 
 > Pré requisito: 
 - CentOS 7 Instalado
 
-<b>Após execute a linha abaixo: </b>
+## Após execute a linha abaixo:
 
 yum install wget -y; wget -O - https://raw.githubusercontent.com/ibinetwork/freepbx_install/master/freepbx14_centos7_install.sh | bash
 
