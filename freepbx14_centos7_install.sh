@@ -24,7 +24,8 @@ echo "  > ivr; 																   "
 echo "  > asteriskinfo;														   "
 echo "  > iaxsettings.														   "
 echo "======================================================================================="
-echo "# Versão 1.3.1 - 11/07/2019 : Download e Instalação de modulos adicionais:"
+echo "# Versão 1.4 - 11/07/2019 : Download e Instalação de modulos adicionais:"
+echo "# Versão 1.5 - 28/06/2020 : Adicionado a rotação de logs do asterisk e FreePBX"
 sleep 10
 yum install epel-release -y
 yum install cowsay -y
@@ -256,6 +257,75 @@ mkdir /tftpboot
 chmod -Rf 777 /tftpboot
 echo ""
 updatedb
+FILE_ROTATE="/etc/logrotate.d/asterisk"
+#
+banner()
+{
+  echo "+------------------------------------------+"
+  printf "| %-40s |\n" "`date`"
+  echo "|                                          |"
+  printf "|`tput bold` %-40s `tput sgr0`|\n" "$@"
+  echo "+------------------------------------------+"
+}
+#
+create_log_rotate()
+{
+echo -e "/var/log/asterisk/queue_log {
+        daily
+        missingok
+        rotate 30
+        notifempty
+        sharedscripts
+        create 0640 asterisk asterisk
+        su asterisk asterisk
+}
+
+/var/spool/mail/asterisk {
+        daily
+        missingok
+        rotate 7
+        notifempty
+        sharedscripts
+        create 0660 asterisk mail
+        su asterisk mail 
+}
+
+/var/log/asterisk/messages
+/var/log/asterisk/event_log
+/var/log/asterisk/full
+/var/log/asterisk/dtmf
+/var/log/asterisk/fail2ban {
+        daily
+        missingok
+        rotate 7
+        notifempty
+        sharedscripts
+        create 0640 asterisk asterisk
+        su asterisk asterisk
+        postrotate
+                /usr/sbin/asterisk -rx 'logger reload' > /dev/null 2> /dev/null
+        endscript
+}
+/var/log/asterisk/freepbx_security.log
+/var/log/asterisk/freepbx.log {
+        # rotate the above log files each month, keeping a six month log history and compressing log files
+        monthly
+        missingok
+        rotate 6
+        #compress
+        notifempty
+        create 0640 asterisk asterisk
+        su asterisk asterisk
+}" >>$FILE_ROTATE
+#
+}
+if [ -e "$FILE_ROTATE" ]
+then
+   banner "Arquivo de logrotate ja existe." "Verifique, e ajuste manual, se necessario!"
+else
+   banner "Arquivo de logrotate nao existe" "Sera criado!"
+   create_log_rotate
+fi
 clear
 echo -e "\033[40;31m======================================================================================================================================== \033[1m"
 echo -e "\033[40;31mSeu FreePBX está instalado. Acesse usando seu navegador e IP do servidor para continuar suas configurações! \033[1m"
