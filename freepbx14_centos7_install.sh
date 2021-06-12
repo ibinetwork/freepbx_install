@@ -180,6 +180,7 @@ echo "  <port protocol=\"udp\" port=\"10000-20000\"/>" >> /etc/firewalld/service
 echo "  <port protocol=\"udp\" port=\"4569\"/>" >> /etc/firewalld/services/asterisk.xml
 echo "  <port protocol=\"udp\" port=\"2727\"/>" >> /etc/firewalld/services/asterisk.xml
 echo "  <port protocol=\"udp\" port=\"5060-5061\"/>" >> /etc/firewalld/services/asterisk.xml
+echo "  <port protocol=\"udp\" port=\"5160\"/>" >> /etc/firewalld/services/asterisk.xml
 echo "</service>" >> /etc/firewalld/services/asterisk.xml
 clear
 echo ""
