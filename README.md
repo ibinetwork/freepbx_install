@@ -11,4 +11,4 @@ yum install wget -y; wget -O - https://raw.githubusercontent.com/ibinetwork/free
 Assim será feito o download do script e instalação do mesmo.
 
 
-![alt text](https://img.shields.io/badge/release-v1.5.0-green)
+![alt text](https://img.shields.io/badge/release-v1.5.1-green)

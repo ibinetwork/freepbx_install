@@ -114,7 +114,7 @@ sleep 5
 cd /usr/src
 wget https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-2.10.0+2.10.0.tar.gz
 wget http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz
-wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-13-current.tar.gz
+wget https://downloads.asterisk.org/pub/telephony/asterisk/old-releases/asterisk-13.35.0.tar.gz
 wget -O jansson.tar.gz https://github.com/akheron/jansson/archive/v2.10.tar.gz
 cd /usr/src
 tar xvfz dahdi-linux-complete-2.10.0+2.10.0.tar.gz
@@ -141,8 +141,8 @@ cowsay "INSTALANDO ASTERISK 13"
 echo ""
 sleep 5
 cd /usr/src
-tar xvfz asterisk-13-current.tar.gz
-rm -f asterisk-13-current.tar.gz
+tar xvfz asterisk-13.35.0.tar.gz
+rm -f asterisk-13.35.0.tar.gz
 cd asterisk-*
 contrib/scripts/install_prereq install
 ./configure --libdir=/usr/lib64 --with-pjproject-bundled
